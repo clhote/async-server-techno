@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-tp",
+  "version": "1.0.0",
+  "description": "package for nodeJS course",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clhote/async-server-techno.git"
+  },
+  "keywords": [
+    "nodejs",
+    "ece"
+  ],
+  "author": "Caroline Lhote",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clhote/async-server-techno/issues"
+  },
+  "homepage": "https://github.com/clhote/async-server-techno#readme"
+}
