@@ -1,2 +1,3 @@
 #!/bin/bash
-node ../src/app.js
+../node_modules/.bin/coffee ../src/app.coffee
+../node_modules/.bin/coffee --compile --output ../lib ../src

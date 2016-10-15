@@ -1,2 +1,2 @@
 #!/bin/bash
-../node_modules/.bin/mocha ../test/user.js
+../node_modules/.bin/mocha  --compilers coffee:coffee-script/register ../test/user.coffee
