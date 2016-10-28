@@ -1,0 +1,27 @@
+extends layout
+
+block head
+  script(type="text/javascript" src="js/jquery-3.1.1.min.js")
+  script(src='js/bootstrap.min.js')
+  script(src='./src/metrics.coffee')
+  link(rel='stylesheet', href='/css/bootstrap.min.css')
+  title My Site
+
+block content
+  div.container
+    div.col-md-6.col-md-offset-3
+      p Hello world, how are you ?!!!
+      button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
+      #metrics
+
+
+  script
+    :coffee-script
+      $('#show-metrics').click (e) ->
+        e.preventDefault()
+        $.getJSON "/metrics.json", {}, (data) ->
+          content = ""
+          for d in data
+
+            content += "timestamp: #{d.timestamp}, value: #{d.value}"
+            $('#metrics').append content
