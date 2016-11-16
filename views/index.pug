@@ -19,7 +19,7 @@ block content
     :coffee-script
       $('#show-metrics').click (e) ->
         e.preventDefault()
-        $.getJSON "/metrics.json", {}, (data) ->
+        $.getJSON "/metrics", {}, (data) ->
           content = ""
           for d in data
 

@@ -1,10 +1,16 @@
-http = require 'http'
+ttp = require 'http'
 user = require './user'
 metrics = require './metrics'
 url = require 'url'
 express = require 'express'
+bodyparser = require 'body-parser'
+
 app = express()
-app.set 'port', 8087
+
+app.set 'port', 8086
+
+urljsonParser =  bodyparser.json()
+urlencodedParser = bodyparser.urlencoded({extended:true})
 
 #tell express to use pug views
 app.set('view engine', 'pug')
@@ -12,9 +18,21 @@ app.set('views', "#{__dirname}/../views")
 
 app.use '/', express.static "#{__dirname}/../public"
 
-app.get '/metrics.json', (req, res) ->
-  metrics.get (err, data) ->
-    throw next err if console.error res.status(200).json data
+
+app.get "/metrics(/:id)?", (req, res) ->
+  metrics.get req.params.id, (err, data) ->
+    throw next err if err
+    res.status(200).json data
+
+app.post "/metrics/:id", urlencodedParser, (req, res) ->
+  metrics.save req.params.id, req.body, (err) ->
+    throw next err if err
+    res.status(200).send()
+
+app.delete "/metrics(/:id)?", (req, res) ->
+  metrics.remove req.params.id, (err) ->
+    throw next err if err
+    res.status(200).send()
 
 app.get '/', (req, res) ->
   res.render 'index', {}

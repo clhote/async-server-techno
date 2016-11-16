@@ -1,1 +1,4 @@
-node_module/
+node_module/*
+.DS_Store
+lib/*
+src/db/metrics/*
