@@ -1,0 +1,21 @@
+block content
+  #form
+    p Please enter your info
+    hr
+    form#login(action='/signup', method="post")
+      .form-group
+        label Username
+            input(type='text', name="username")
+      .form-group
+          label Password
+            input(type='password', name="password")
+      .form-group
+          label Name
+            input(type='text', name="name")
+      .form-group
+          label Email
+            input(type='text', name="email")
+      button#login_submit.btn.btn-primary.btn-block(type='submit') Create account
+      i.icon-ok.icon-white 
+      hr
+      button.btn.btn-success.btn-block(type='button', href='/register') Create an account
