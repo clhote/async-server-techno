@@ -1,4 +1,4 @@
-ttp = require 'http'
+http = require 'http'
 user = require './user'
 metrics = require './metrics'
 url = require 'url'
@@ -11,7 +11,7 @@ LevelStore = require('level-session-store')(session)
 app = express()
 
 app.use morgan 'dev'
-app.set 'port', 8086
+app.set 'port', 8087
 
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
@@ -24,11 +24,12 @@ app.use '/', express.static "#{__dirname}/../public"
 
 app.use session
   secret: 'MyAppSecret'
-  store: new LevelStore './db/sessions'
+  store: new LevelStore '../db/sessions'
   resave: true
   saveUninitialized: true
 
 app.get '/login', (req, res) ->
+  console.log (req.session.username)
   res.render 'login'
 
 app.get '/signup', (req, res) ->
@@ -36,14 +37,16 @@ app.get '/signup', (req, res) ->
 
 app.post '/login', urlencodedParser, (req, res) ->
   user.get req.body.username, (err, data) ->
+    console.log (data)
     return next err if err
-
-    unless req.body.password == data.password
-      res.redirect '/login'
-    else
+    if req.body.password == data.password
       req.session.loggedIn = true
       req.session.username = data.username
       res.redirect '/'
+    else
+      res.redirect '/login'
+
+
 
 app.get '/list/:username', (req, res) ->
   user.get req.params.username, (err, data) ->
@@ -54,11 +57,12 @@ app.post '/signup', urlencodedParser, (req, res) ->
   user.save req.body.username, req.body.password, req.body.name, req.body.email, (err) ->
     throw next err if err
     res.status(200).send()
-    res.redirect '/'
+    res.redirect 'login'
 
 app.get '/logout', (req, res) ->
   delete req.session.loggedIn
   delete req.session.username
+  res.redirect '/login'
 
 authCheck = (req, res, next) ->
   unless req.session.loggedIn == true

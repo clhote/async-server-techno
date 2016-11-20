@@ -5,7 +5,7 @@ db = require('./db')("#{__dirname}/../db/metrics")
 
 module.exports =
 
-save: (id, metrics, callback) ->
+  save: (id, metrics, callback) ->
     ws = db.createWriteStream()
     console.log metrics
     ws.on 'error', callback
