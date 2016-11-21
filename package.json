@@ -4,7 +4,8 @@
   "description": "package for nodeJS course",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test/user.coffee"
+    "test": "mocha --compilers coffee:coffee-script/register test/user.coffee",
+    "start": "sh bin/start.sh"
   },
   "repository": {
     "type": "git",
@@ -28,12 +29,15 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "coffee-script": "^1.11.1",
+    "express-session": "^1.14.2",
     "jade": "^1.11.0",
     "jstransformer-coffee-script": "^1.1.0",
     "level": "^1.5.0",
+    "level-session-store": "^2.0.1",
     "level-ws": "0.0.1",
     "levelup": "^1.3.3",
     "lever": "0.0.1",
+    "morgan": "^1.7.0",
     "nodemon": "^1.11.0",
     "pug": "^2.0.0-beta6"
   }

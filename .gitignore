@@ -1,4 +1,4 @@
-node_module/*
-.DS_Store
+node_modules/*
+npm-debug.log
 lib/*
-src/db/metrics/*
+db/*
