@@ -10,9 +10,10 @@ LevelStore = require('level-session-store')(session)
 
 app = express()
 
+
 app.use morgan 'dev'
 app.set 'port', 8087
-
+app.use
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
 
@@ -46,15 +47,13 @@ app.post '/login', urlencodedParser, (req, res) ->
     else
       res.redirect '/login'
 
-
-
 app.get '/list/:username', (req, res) ->
   user.get req.params.username, (err, data) ->
     throw next err if err
     res.status(200).json data
 
 app.post '/signup', urlencodedParser, (req, res) ->
-  user.save req.body.username, req.body.password, req.body.name, req.body.email, (err) ->
+  user.save req.body.username, req.body, (err) ->
     throw next err if err
     res.status(200).send()
     res.redirect 'login'
@@ -63,6 +62,11 @@ app.get '/logout', (req, res) ->
   delete req.session.loggedIn
   delete req.session.username
   res.redirect '/login'
+
+app.delete '/list/:username', (req, res) ->
+  user.delete req.params.username, (err) ->
+    throw next err if err
+    res.status(200).send()
 
 authCheck = (req, res, next) ->
   unless req.session.loggedIn == true
@@ -75,6 +79,8 @@ app.get '/', authCheck, (req, res) ->
 
 
 app.get "/metrics(/:id)?", (req, res) ->
+  #db.metrics.get req.session.user.username,
+  #req.params.id, (err, metrics) ->
   metrics.get req.params.id, (err, data) ->
     throw next err if err
     res.status(200).json data
