@@ -1,2 +1,3 @@
 #!/bin/bash
-nodemon src/app.coffee
+cd src/
+nodemon app.coffee

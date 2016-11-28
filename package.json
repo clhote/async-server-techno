@@ -15,7 +15,7 @@
     "nodejs",
     "ece"
   ],
-  "author": "Caroline Lhote",
+  "author": "Caroline Lhote, Gabriel Desportes",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/clhote/async-server-techno/issues"

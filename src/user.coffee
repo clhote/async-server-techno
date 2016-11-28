@@ -6,32 +6,46 @@ module.exports =
   get: (username, callback) ->
     user = {}
     rs = db.createReadStream
-      gte: "user:#{username}"
+      start: "user:#{username}:"
     rs.on 'data', (data) ->
-      #parsing logic
-      [_, _username] = data.key.split ':'
-      [_password, _name, _email] = data.value.split ':'
+      [_, _username, _key] = data.key.split ':'
+      username = username;
       if _username == username
-        user=
-          username: _username
-          password: _password
-          name: _name
-          email: _email
+        [_, _username, _key] = data.key.split ':'
+        username= _username;
+        value= data.value
+        console.log _key + " " + value
+        user["#{_key}"] = value
+        console.log user
     rs.on 'error', callback
+    console.log user
     rs.on 'close', ->
       callback null, user
 
 #Save a user with its info
-  save: (username, password, name, email, callback) ->
+
+  # opts :
+  #   password: ...
+  #   email: ...
+  #   name: ...
+  save: (username, opts, callback) ->
+    ws = db.createWriteStream()
+    ws.on 'error', callback
+    ws.on 'close', callback
+    for k, v of opts
+      ws.write
+        key: "user:#{username}:#{k}"
+        value: v
+      console.log k + v
+    ws.end()
+
+
+#Delete a user by username
+  delete: (username, callback) ->
     ws = db.createWriteStream()
     ws.on 'error', callback
     ws.on 'close', callback
     ws.write
+      type:"del"
       key: "user:#{username}"
-      value: "#{password}:#{name}:#{email}"
     ws.end()
-
-#Delete a user by username
-  remove: (username, callback) ->
-    db.del "user:#{username}", (err) ->
-      callback !err
