@@ -2,7 +2,6 @@ levelup = require 'levelup'
 levelws = require 'level-ws'
 db = require('./db')("#{__dirname}/../db/metrics")
 
-
 module.exports =
 
   save: (id, metrics, callback) ->

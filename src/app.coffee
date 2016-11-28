@@ -1,6 +1,7 @@
 http = require 'http'
 user = require './user'
 metrics = require './metrics'
+user_metrics = require './user-metrics'
 url = require 'url'
 express = require 'express'
 bodyparser = require 'body-parser'
@@ -12,7 +13,7 @@ app = express()
 
 
 app.use morgan 'dev'
-app.set 'port', 8087
+app.set 'port', 8080
 app.use
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
@@ -77,7 +78,6 @@ authCheck = (req, res, next) ->
 app.get '/', authCheck, (req, res) ->
   res.render 'index', name : req.session.username
 
-
 app.get "/metrics(/:id)?", (req, res) ->
   #db.metrics.get req.session.user.username,
   #req.params.id, (err, metrics) ->
@@ -89,6 +89,11 @@ app.post "/metrics/:id", urlencodedParser, (req, res) ->
   metrics.save req.params.id, req.body, (err) ->
     throw next err if err
     res.status(200).send()
+
+app.get "/test", (req, res) ->
+  user_metrics.get "test", (err, data) ->
+    throw next err if err
+    res.status(200).json data
 
 app.delete "/metrics(/:id)?", (req, res) ->
   metrics.remove req.params.id, (err) ->
