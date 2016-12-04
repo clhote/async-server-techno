@@ -25,4 +25,11 @@ module.exports =
       callback null, user_metric
 
 
-  remove: (metricId, callback) ->
+remove: (username, callback) ->
+  ws = db.createWriteStream()
+  ws.on 'error', callback
+  ws.on 'close', callback
+  ws.write
+    type:"del"
+    key: "user_metrics:#{username}"
+  ws.end()
