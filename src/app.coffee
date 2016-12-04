@@ -10,11 +10,17 @@ session = require 'express-session'
 LevelStore = require('level-session-store')(session)
 
 app = express()
+server = require('http').Server(app)
+io = require('socket.io')(server)
 
+sockets = []
+
+io.on 'connection', (socket) ->
+  sockets.push socket
 
 app.use morgan 'dev'
-app.set 'port', 8080
-app.use
+app.set 'port', 8081
+
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
 
@@ -69,6 +75,17 @@ app.delete '/list/:username', (req, res) ->
     throw next err if err
     res.status(200).send()
 
+#Logging middleware
+app.use (req, res, next) ->
+  for socket in sockets
+    socket.emit 'logs',
+      username:
+        if req.session.username == undefined then 'anonymous'
+        else req.session.username
+      url: req.url
+  next()
+
+
 authCheck = (req, res, next) ->
   unless req.session.loggedIn == true
     res.redirect '/login'
@@ -77,6 +94,9 @@ authCheck = (req, res, next) ->
 
 app.get '/', authCheck, (req, res) ->
   res.render 'index', name : req.session.username
+
+app.get '/logs', (req, res) ->
+  res.render 'log'
 
 app.get "/metrics(/:id)?", (req, res) ->
   #db.metrics.get req.session.user.username,
@@ -103,5 +123,8 @@ app.delete "/metrics(/:id)?", (req, res) ->
 app.get '/hello/:name', (req, res) ->
   res.send "Hello #{req.params.name}"
 
-app.listen app.get('port'), () ->
-  console.log "listening on port #{app.get 'port' }"
+server.listen app.get('port'), ->
+    console.log "listening on port #{app.get 'port'}"
+
+#app.listen app.get('port'), () ->
+#  console.log "listening on port #{app.get 'port' }"

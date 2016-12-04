@@ -1,0 +1,18 @@
+extends layout
+    
+block head
+  title AST - logs
+  script(type="text/javascript" src='/socket.io/socket.io.js')
+  
+block content
+  .container
+    h1 logs
+    #content
+
+
+  script
+    :coffee-script
+      socket = io.connect 'http://localhost:8081'
+      socket.on 'logs', (data) ->
+        $('#content').append "#{data.username} loaded #{data.url} </br>"
+    
