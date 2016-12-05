@@ -8,17 +8,25 @@ block content
     div.col-md-6.col-md-offset-3
       p Hello #{name} , how are you ?!!!
       button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
+      select
       button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
+      form#addMetrics(action='/index', method="post")
+        .form-group
+          label Your metric batch
+          textarea.form-control(cols='40', rows="5" name="timestamp and value")
+        button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics
+      
       #metrics
 
 
   script
     :coffee-script
-      $('#show-metrics').click (e) ->
-        e.preventDefault()
-        $.getJSON "/metrics.json", {}, (data) ->
+      $(document).ready ->
+        $.get "/metrics2", [], (data) ->
           content = ""
           for d in data
 
-            content += "timestamp: #{d.timestamp}, value: #{d.value}"
-            $('#metrics').append content
+            $('select').append("<option value='#{d.metricId}'>#{d.metricId}</option>") 
+            
+        
+        

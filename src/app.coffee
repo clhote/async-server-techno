@@ -14,6 +14,7 @@ server = require('http').Server(app)
 io = require('socket.io')(server)
 
 sockets = []
+idMetric = 0;
 
 io.on 'connection', (socket) ->
   sockets.push socket
@@ -53,6 +54,19 @@ app.post '/login', urlencodedParser, (req, res) ->
       res.redirect '/'
     else
       res.redirect '/login'
+
+app.post '/index', urlencodedParser, (req, res) ->
+  metrics.save idMetric, req.body, (err) ->
+    throw next err if err
+    res.status(200).send()
+  user_metrics.save req.session.username, idMetric, (err) ->
+    throw next err if err
+    res.status(200).send()
+
+app.get '/metrics2', (req, res) ->
+    user_metrics.get req.session.username, (err, data) ->
+      throw next err if err
+      res.status(200).json data
 
 app.get '/list/:username', (req, res) ->
   user.get req.params.username, (err, data) ->

@@ -38,6 +38,7 @@ module.exports =
         value: v
       console.log k + v
     ws.end()
+    console.log "FIN USER"
 
 
 #Delete a user by username
