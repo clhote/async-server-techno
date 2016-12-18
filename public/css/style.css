@@ -26,6 +26,9 @@ body h2 {
   float: right;
   margin-top: 1.5em;
 }
+#addMetrics {
+  display: none;
+}
 .metric {
   text-align: center;
 }

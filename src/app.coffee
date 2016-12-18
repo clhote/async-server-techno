@@ -12,6 +12,8 @@ errorHandler = require 'errorhandler'
 app = express()
 server = require('http').Server(app)
 io = require('socket.io')(server)
+stylus = require 'stylus'
+nib = require 'nib'
 
 sockets = []
 idMetric = 4;
@@ -24,16 +26,25 @@ if process.env.NODE_ENV == 'development'
 io.on 'connection', (socket) ->
   sockets.push socket
 
+compile = (str, path) ->
+  stylus(str).set('filename', path).use nib()
+
 app.use morgan 'dev'
 app.set 'port', 8081
 
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
 
-#tell express to use pug views
+
+
+
+
+#tell express to use pug views and Stylus stylesheets
 app.set('view engine', 'pug')
 app.set('views', "#{__dirname}/../views")
-
+app.use stylus.middleware
+  src: "#{__dirname}/../public"
+  , compile: compile
 app.use '/', express.static "#{__dirname}/../public"
 
 app.use session

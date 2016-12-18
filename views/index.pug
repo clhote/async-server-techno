@@ -12,13 +12,14 @@ block content
       p.block Choose the metric you want to display : 
       select.block#dropdown
       button.block.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Display
-      button.block#metric_add.btn.btn-success Add metric batch    
-      form#addMetrics(action='/umetrics', method="post")
-        .form-group
-          label Your metric batch
-          textarea.form-control(cols='40', rows="5")
-        button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics    
-        #metrics
+      button.block#metric_add.btn.btn-success Add metric batch  
+      div.newMet 
+        form#addMetrics(action='/umetrics', method="post")
+          .form-group
+            label Your metric batch
+            textarea.form-control(cols='40', rows="5")
+          button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics    
+        
       #graph
       
 
