@@ -61,7 +61,7 @@ var m = [80, 80, 80, 80]; // margins
 function test(data) {
 
 	function getDate(d) {
-			return new Date(d.timestamp*1000);
+			return new Date(parseInt(d.timestamp));
 	}
 
 	// get max and min dates - this assumes data is sorted
@@ -80,8 +80,8 @@ function test(data) {
 	var xAxis = d3.svg.axis()
 	    .scale(x)
 	    .orient('bottom')
-	    .ticks(10)
-	    .tickFormat(d3.time.format('%d/%m'))
+	    .ticks(5)
+	    .tickFormat(d3.time.format('%Y-%m'))
 	    .tickSize(0)
 	    .tickPadding(8);
 
@@ -90,26 +90,28 @@ function test(data) {
 	    .orient('left')
 	    .tickPadding(8);
 
-	var svg = d3.select('body').append('svg')
+	var svg = d3.select('#graph').append('svg')
 	    .attr('class', 'chart')
 	    .attr('width', width)
 	    .attr('height', height)
 	  .append('g')
 	    .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
-	svg.selectAll('.chart')
-	    .data(data)
-	  .enter().append('rect')
-	    .attr('class', 'bar')
-	    .attr('x', function(d) { return x(getDate(d)); })
-	    .attr('y', function(d) { return height - margin.top - margin.bottom - (height - margin.top - margin.bottom - y(d.value)) })
-	    .attr('width', 10)
-	    .attr('height', function(d) { return height - margin.top - margin.bottom - y(d.value) });
+
+	var	valueline = d3.svg.line()
+				.x(function(d) { return x(getDate(d)); })
+				.y(function(d) { return y(d.value); });
+
+				svg.append("path")
+				.attr("class", "line")
+				.attr("d", valueline(data));
+			
 
 	svg.append('g')
 	    .attr('class', 'x axis')
 	    .attr('transform', 'translate(0, ' + (height - margin.top - margin.bottom) + ')')
 	    .call(xAxis);
+
 
 	svg.append('g')
 	  .attr('class', 'y axis')

@@ -26,6 +26,7 @@ if process.env.NODE_ENV == 'development'
 io.on 'connection', (socket) ->
   sockets.push socket
 
+#Compile Stylus stylesheets
 compile = (str, path) ->
   stylus(str).set('filename', path).use nib()
 
@@ -34,10 +35,6 @@ app.set 'port', 8081
 
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
-
-
-
-
 
 #tell express to use pug views and Stylus stylesheets
 app.set('view engine', 'pug')

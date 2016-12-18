@@ -1,15 +1,14 @@
-.chart {
-  font-family: Arial, sans-serif;
-  font-size: 10px;
+path {
+  stroke: #4682b4;
+  stroke-width: 2;
+  fill: none;
 }
 .axis path,
 .axis line {
   fill: none;
-  stroke: #fff;
+  stroke: #808080;
+  stroke-width: 1;
   shape-rendering: crispEdges;
-}
-.bar {
-  fill: #4682b4;
 }
 .block {
   display: inline-block;
@@ -28,6 +27,9 @@ body h2 {
 }
 #addMetrics {
   display: none;
+}
+#graph {
+  text-align: center;
 }
 .metric {
   text-align: center;

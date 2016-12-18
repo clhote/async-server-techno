@@ -19,7 +19,6 @@ block content
             label Your metric batch
             textarea.form-control(cols='40', rows="5")
           button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics    
-        
       #graph
       
 
@@ -36,11 +35,12 @@ block content
       
       $('#show-graph').click (e) ->
         e.preventDefault()
+        $('#graph').empty()
         idMet = $('#dropdown').val()
         $.get "/umetrics/"+idMet, [], (data) ->
           content = ""
           test(data)
-          $('#metrics').append content
+          $('#graph').append content
       
   
 
