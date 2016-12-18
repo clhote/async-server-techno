@@ -12,10 +12,18 @@ The following script populates the database, start the server and run unit tests
 ```sh
 npm start
 ```
+##Populate db
+Got to bin folder
+```sh
+cd bin
+coffee metric.coffee
+```
 
 ## Tests
+Go to bin folder
 ```sh
-npm test
+cd bin
+sh test.sh
 ```
 
 ## Populate the database
