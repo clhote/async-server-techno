@@ -3,7 +3,7 @@ while true; do
     read -p "Voulez vous remplir la base de données de test ?" yn
     case $yn in
         [Yy]* ) cd bin/; coffee metric.coffee; cd ..; break;;
-        [Nn]* ) exit;;
+        [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
 done
