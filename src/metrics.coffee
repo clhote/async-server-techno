@@ -46,10 +46,11 @@ module.exports =
         if !metricsId.length
           callback false
           return
-
         for m in metricsId
           db.del "metric:#{m.id}:#{m.timestamp}", (err) ->
-            callback !err
+            #callback null
+        callback null
+
 
 
 

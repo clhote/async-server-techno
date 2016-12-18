@@ -125,7 +125,7 @@ app.post "/metrics/:id", urlencodedParser, (req, res) ->
     res.status(200).send()
 
 #Remove a metric batch
-app.delete "/metrics(/:id)?", (req, res) ->
+app.delete "/metrics(/:id)?", (req, res,next) ->
   metrics.remove req.params.id, (err) ->
     throw next err if err
     res.status(200).send()
