@@ -81,7 +81,9 @@ app.get '/list/:username', (req, res) ->
 app.post '/signup', urlencodedParser, (req, res) ->
   user.get req.body.username, (err, data) ->
     if data.username == req.body.username
-      console.log "ERROR Il existe deja un user ayant ce username"
+      console.log "ERROR Username already exists"
+      res.render 'signup', message:"This username already exist, please choose another one"
+
     else
       user.save req.body.username, req.body, (err) ->
         throw next err if err

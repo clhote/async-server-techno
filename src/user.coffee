@@ -14,11 +14,9 @@ module.exports =
         [_, _username, _key] = data.key.split ':'
         username= _username;
         value= data.value
-        console.log _key + " " + value
         user["#{_key}"] = value
         console.log user
     rs.on 'error', callback
-    console.log user
     rs.on 'close', ->
       callback null, user
 
@@ -36,9 +34,7 @@ module.exports =
       ws.write
         key: "user:#{username}:#{k}"
         value: v
-      console.log k + v
     ws.end()
-    console.log "FIN USER"
 
 
 #Delete a user by username
