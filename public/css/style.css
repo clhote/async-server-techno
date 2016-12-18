@@ -1,0 +1,23 @@
+.chart {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+.bar {
+  fill: #4682b4;
+}
+body h2 {
+  display: inline-block;
+}
+#logout {
+  float: right;
+  margin-top: 1.5em;
+}
+.metric {
+  text-align: center;
+}

@@ -5,22 +5,20 @@ block head
 
 block content
   div.container
-    div.row
-      div.col-md-6.col-md-offset-3
-        p Hello #{name} , how are you ?!!!
-        button.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
-        select#dropdown
-        button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
-        button.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Test
-        form#addMetrics(action='/umetrics', method="post")
-          .form-group
-            label Your metric batch
-            textarea.form-control(cols='40', rows="5")
-          button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics
-        
+    div.col-md-12.metric
+      h2 Hello #{name}
+      button#logout.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
+      p You can manage your metrics here.
+      select#dropdown
+      button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
+      button.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Test
+      form#addMetrics(action='/umetrics', method="post")
+        .form-group
+          label Your metric batch
+          textarea.form-control(cols='40', rows="5")
+        button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics    
         #metrics
-    div.row  
-      div#graph(class="aGraph")
+      #graph
       
 
   script

@@ -1,16 +1,1 @@
 
-
-.chart {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-  }
-
-  .axis path, .axis line {
-    fill: none;
-    stroke: #FFF;
-    shape-rendering: crispEdges;
-  }
-
-  .bar {
-    fill: steelblue;
-  }

@@ -81,7 +81,7 @@ function test(data) {
 	    .scale(x)
 	    .orient('bottom')
 	    .ticks(10)
-	    .tickFormat(d3.time.format('%a %d'))
+	    .tickFormat(d3.time.format('%d/%m'))
 	    .tickSize(0)
 	    .tickPadding(8);
 

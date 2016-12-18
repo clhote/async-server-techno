@@ -12,6 +12,8 @@ errorHandler = require 'errorhandler'
 app = express()
 server = require('http').Server(app)
 io = require('socket.io')(server)
+stylus = require 'stylus'
+nib = require 'nib'
 
 sockets = []
 idMetric = 4;
@@ -30,7 +32,16 @@ app.set 'port', 8081
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
 
+compile = (str, path) ->
+  stylus(str).set('filename', path).use nib()
+
+#tell express to use  stylus
+app.use stylus.middleware
+  src: "#{__dirname}/../public"
+  , compile: compile
+
 #tell express to use pug views
+
 app.set('view engine', 'pug')
 app.set('views', "#{__dirname}/../views")
 
