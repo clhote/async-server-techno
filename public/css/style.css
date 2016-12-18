@@ -11,8 +11,16 @@
 .bar {
   fill: #4682b4;
 }
+.block {
+  display: inline-block;
+  margin: 20px;
+}
 body h2 {
   display: inline-block;
+  text-align: center;
+}
+.metric h2 {
+  padding-left: 1.2em;
 }
 #logout {
   float: right;

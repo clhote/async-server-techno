@@ -1,7 +1,5 @@
 should = require('should')
 user = require('../src/user')
-db = require("#{__dirname}/../src/db")("#{__dirname}/../db/test")
-
 
 user1 = {
   username: "Bob80",

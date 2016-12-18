@@ -8,10 +8,11 @@ block content
     div.col-md-12.metric
       h2 Hello #{name}
       button#logout.btn.btn-danger(href='/logout' onClick='document.location.href="/logout"') Logout
-      p You can manage your metrics here.
-      select#dropdown
-      button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
-      button.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Test
+      h3 You can manage your metrics here.
+      p.block Choose the metric you want to display : 
+      select.block#dropdown
+      button.block.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Display
+      button.block#metric_add.btn.btn-success Add metric batch    
       form#addMetrics(action='/umetrics', method="post")
         .form-group
           label Your metric batch
@@ -28,17 +29,10 @@ block content
           content = ""
           for d in data
             $('select').append("<option value='#{d.metricId}'>#{d.metricId}</option>") 
+
+      $('#metric_add').click ->
+        $('#addMetrics').toggle()
       
-      $('#show-metrics').click (e) ->
-        e.preventDefault()
-        idMet = $('#dropdown').val()
-        $.get "/metrics/"+idMet, [], (data) ->
-          content = ""
-          test(data)
-          for d in data
-            content += "timestamp: #{d.timestamp}, value: #{d.value}"
-          $('#metrics').append content
-  
       $('#show-graph').click (e) ->
         e.preventDefault()
         idMet = $('#dropdown').val()
