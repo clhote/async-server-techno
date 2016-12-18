@@ -16,7 +16,8 @@ stylus = require 'stylus'
 nib = require 'nib'
 
 sockets = []
-idMetric = 4;
+history = []
+idMetric = 4
 
 if process.env.NODE_ENV == 'development'
   #only use in development
@@ -90,7 +91,7 @@ app.post '/signup', urlencodedParser, (req, res) ->
         res.status(200).send()
         res.redirect 'login'
 
-#logging out a user
+#loging out a user
 app.get '/logout', (req, res) ->
   delete req.session.loggedIn
   delete req.session.username
