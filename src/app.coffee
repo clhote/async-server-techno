@@ -37,13 +37,22 @@ app.use session
   resave: true
   saveUninitialized: true
 
+#Render login view
 app.get '/login', (req, res) ->
   console.log (req.session.username)
   res.render 'login'
 
+#Render signup view
 app.get '/signup', (req, res) ->
   res.render 'signup'
 
+app.get '/', authCheck, (req, res) ->
+  res.render 'index', name : req.session.username
+
+app.get '/logs', (req, res) ->
+  res.render 'log'
+
+#Authorization : check if login and password matches and get loggedin
 app.post '/login', urlencodedParser, (req, res) ->
   user.get req.body.username, (err, data) ->
     console.log (data)
@@ -55,23 +64,26 @@ app.post '/login', urlencodedParser, (req, res) ->
     else
       res.redirect '/login'
 
-
+#Get the list of all users
 app.get '/list/:username', (req, res) ->
   user.get req.params.username, (err, data) ->
     throw next err if err
     res.status(200).json data
 
+#Add a new user
 app.post '/signup', urlencodedParser, (req, res) ->
   user.save req.body.username, req.body, (err) ->
     throw next err if err
     res.status(200).send()
     res.redirect 'login'
 
+#logging out a user
 app.get '/logout', (req, res) ->
   delete req.session.loggedIn
   delete req.session.username
   res.redirect '/login'
 
+#delete a user
 app.delete '/list/:username', (req, res) ->
   user.delete req.params.username, (err) ->
     throw next err if err
@@ -87,18 +99,12 @@ app.use (req, res, next) ->
       url: req.url
   next()
 
-
+#Middleware checking user authentication
 authCheck = (req, res, next) ->
   unless req.session.loggedIn == true
     res.redirect '/login'
   else
     next()
-
-app.get '/', authCheck, (req, res) ->
-  res.render 'index', name : req.session.username
-
-app.get '/logs', (req, res) ->
-  res.render 'log'
 
 #Get a metric batch
 app.get "/metrics(/:id)?", (req, res) ->
@@ -124,6 +130,7 @@ app.get '/umetrics', (req, res) ->
       throw next err if err
       res.status(200).json data
 
+#Get user's metric batch by id
 app.get '/umetrics/:id', (req, res) ->
     metrics.get req.params.id, (err, data) ->
       throw next err if err
@@ -140,6 +147,7 @@ app.post '/umetrics', urlencodedParser, (req, res) ->
     res.status(200).send()
   res.redirect('back')
 
+#Delete a specific user batch
 app.delete "/umetrics/:id", (req, res) ->
   user_metrics.remove req.session.username, (err) ->
     throw next err if err
@@ -148,9 +156,6 @@ app.delete "/umetrics/:id", (req, res) ->
     throw next err if err
     res.status(200).send()
 
-
-app.get '/hello/:name', (req, res) ->
-  res.send "Hello #{req.params.name}"
 
 server.listen app.get('port'), ->
     console.log "listening on port #{app.get 'port'}"
