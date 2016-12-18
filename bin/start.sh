@@ -11,4 +11,11 @@ cd bin/
 sh test.sh
 cd ..
 cd src/
+echo **********
+echo
+echo Si vous avez remplit la base de données via ce script vous y trouverai les users:
+echo user: caro     password: 123
+echo user: gaby     password: azerty
+echo
+echo **********
 nodemon app.coffee
