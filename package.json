@@ -4,7 +4,7 @@
   "description": "package for nodeJS course",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register test/user.coffee",
+    "test": "sh bin/test.sh",
     "start": "sh bin/start.sh"
   },
   "repository": {
