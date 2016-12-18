@@ -43,9 +43,10 @@ module.exports =
 
 #Delete a user by username
   delete: (username, callback) ->
-    this.get username, (err, user) ->
-      db.del "user:#{username}:username"
-      db.del "user:#{username}:password"
-      db.del "user:#{username}:name"
-      db.del "user:#{username}:email"
-      callback err
+    ws = db.createWriteStream()
+    ws.on 'error', callback
+    ws.on 'close', callback
+    ws.write
+      type:"del"
+      key: "user:#{username}"
+    ws.end()
