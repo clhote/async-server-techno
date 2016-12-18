@@ -8,13 +8,18 @@ bodyparser = require 'body-parser'
 morgan = require 'morgan'
 session = require 'express-session'
 LevelStore = require('level-session-store')(session)
-
+errorHandler = require 'errorhandler'
 app = express()
 server = require('http').Server(app)
 io = require('socket.io')(server)
 
 sockets = []
 idMetric = 4;
+
+if process.env.NODE_ENV == 'development'
+  #only use in development
+  app.use(errorhandler())
+
 
 io.on 'connection', (socket) ->
   sockets.push socket
@@ -45,12 +50,6 @@ app.get '/login', (req, res) ->
 #Render signup view
 app.get '/signup', (req, res) ->
   res.render 'signup'
-
-app.get '/', authCheck, (req, res) ->
-  res.render 'index', name : req.session.username
-
-app.get '/logs', (req, res) ->
-  res.render 'log'
 
 #Authorization : check if login and password matches and get loggedin
 app.post '/login', urlencodedParser, (req, res) ->
@@ -105,6 +104,13 @@ authCheck = (req, res, next) ->
     res.redirect '/login'
   else
     next()
+
+
+app.get '/', authCheck, (req, res) ->
+  res.render 'index', name : req.session.username
+
+app.get '/logs', (req, res) ->
+  res.render 'log'
 
 #Get a metric batch
 app.get "/metrics(/:id)?", (req, res) ->
