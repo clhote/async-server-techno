@@ -12,8 +12,6 @@ errorHandler = require 'errorhandler'
 app = express()
 server = require('http').Server(app)
 io = require('socket.io')(server)
-stylus = require 'stylus'
-nib = require 'nib'
 
 sockets = []
 idMetric = 4;
@@ -32,16 +30,7 @@ app.set 'port', 8081
 urljsonParser =  bodyparser.json()
 urlencodedParser = bodyparser.urlencoded({extended:true})
 
-compile = (str, path) ->
-  stylus(str).set('filename', path).use nib()
-
-#tell express to use  stylus
-app.use stylus.middleware
-  src: "#{__dirname}/../public"
-  , compile: compile
-
 #tell express to use pug views
-
 app.set('view engine', 'pug')
 app.set('views', "#{__dirname}/../views")
 
@@ -82,10 +71,14 @@ app.get '/list/:username', (req, res) ->
 
 #Add a new user
 app.post '/signup', urlencodedParser, (req, res) ->
-  user.save req.body.username, req.body, (err) ->
-    throw next err if err
-    res.status(200).send()
-    res.redirect 'login'
+  user.get req.body.username, (err, data) ->
+    if data.username == req.body.username
+      console.log "ERROR Il existe deja un user ayant ce username"
+    else
+      user.save req.body.username, req.body, (err) ->
+        throw next err if err
+        res.status(200).send()
+        res.redirect 'login'
 
 #logging out a user
 app.get '/logout', (req, res) ->
@@ -136,7 +129,7 @@ app.post "/metrics/:id", urlencodedParser, (req, res) ->
     res.status(200).send()
 
 #Remove a metric batch
-app.delete "/metrics(/:id)?", (req, res,next) ->
+app.delete "/metrics(/:id)?", (req, res) ->
   metrics.remove req.params.id, (err) ->
     throw next err if err
     res.status(200).send()
