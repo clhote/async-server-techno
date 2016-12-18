@@ -14,7 +14,7 @@ server = require('http').Server(app)
 io = require('socket.io')(server)
 
 sockets = []
-idMetric = 0;
+idMetric = 4;
 
 io.on 'connection', (socket) ->
   sockets.push socket
@@ -55,18 +55,6 @@ app.post '/login', urlencodedParser, (req, res) ->
     else
       res.redirect '/login'
 
-app.post '/index', urlencodedParser, (req, res) ->
-  metrics.save idMetric, req.body, (err) ->
-    throw next err if err
-    res.status(200).send()
-  user_metrics.save req.session.username, idMetric, (err) ->
-    throw next err if err
-    res.status(200).send()
-
-app.get '/metrics2', (req, res) ->
-    user_metrics.get req.session.username, (err, data) ->
-      throw next err if err
-      res.status(200).json data
 
 app.get '/list/:username', (req, res) ->
   user.get req.params.username, (err, data) ->
@@ -112,27 +100,54 @@ app.get '/', authCheck, (req, res) ->
 app.get '/logs', (req, res) ->
   res.render 'log'
 
+#Get a metric batch
 app.get "/metrics(/:id)?", (req, res) ->
-  #db.metrics.get req.session.user.username,
-  #req.params.id, (err, metrics) ->
   metrics.get req.params.id, (err, data) ->
     throw next err if err
     res.status(200).json data
 
+#Save a metric batch
 app.post "/metrics/:id", urlencodedParser, (req, res) ->
   metrics.save req.params.id, req.body, (err) ->
     throw next err if err
     res.status(200).send()
 
-app.get "/test", (req, res) ->
-  user_metrics.get "test", (err, data) ->
-    throw next err if err
-    res.status(200).json data
-
+#Remove a metric batch
 app.delete "/metrics(/:id)?", (req, res) ->
   metrics.remove req.params.id, (err) ->
     throw next err if err
     res.status(200).send()
+
+#Get user's metric batches
+app.get '/umetrics', (req, res) ->
+    user_metrics.get req.session.username, (err, data) ->
+      throw next err if err
+      res.status(200).json data
+
+app.get '/umetrics/:id', (req, res) ->
+    metrics.get req.params.id, (err, data) ->
+      throw next err if err
+      res.status(200).json data
+
+#Post user's metric batch
+app.post '/umetrics', urlencodedParser, (req, res) ->
+  metrics.save idMetric, req.body, (err) ->
+    throw next err if err
+    res.status(200).send()
+  user_metrics.save req.session.username, idMetric, (err) ->
+    throw next err if err
+    idMetric++
+    res.status(200).send()
+  res.redirect('back')
+
+app.delete "/umetrics/:id", (req, res) ->
+  user_metrics.remove req.session.username, (err) ->
+    throw next err if err
+    res.status(200).send()
+  metrics.remove req.params.id, (err) ->
+    throw next err if err
+    res.status(200).send()
+
 
 app.get '/hello/:name', (req, res) ->
   res.send "Hello #{req.params.name}"

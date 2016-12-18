@@ -12,10 +12,10 @@ block content
         select#dropdown
         button(type="button" class="btn btn-success" id="show-metrics") Bring metrics
         button.btn.btn-danger(type="button" class="btn btn-success" id="show-graph") Test
-        form#addMetrics(action='/index', method="post")
+        form#addMetrics(action='/umetrics', method="post")
           .form-group
             label Your metric batch
-            textarea.form-control(cols='40', rows="5" name="timestamp and value")
+            textarea.form-control(cols='40', rows="5")
           button#metric_submit.btn.btn-success.btn-block(type='submit') Add metrics
         
         #metrics
@@ -26,7 +26,7 @@ block content
   script
     :coffee-script
       $(document).ready ->
-        $.get "/metrics2", [], (data) ->
+        $.get "/umetrics", [], (data) ->
           content = ""
           for d in data
             $('select').append("<option value='#{d.metricId}'>#{d.metricId}</option>") 
@@ -43,7 +43,8 @@ block content
   
       $('#show-graph').click (e) ->
         e.preventDefault()
-        $.get "/metrics/0", [], (data) ->
+        idMet = $('#dropdown').val()
+        $.get "/umetrics/"+idMet, [], (data) ->
           content = ""
           test(data)
           $('#metrics').append content

@@ -1,26 +1,16 @@
-path {
-  stroke: steelblue;
-  stroke-width: 1;
-  fill: none;
-}
 
-.axis {
-  shape-rendering: crispEdges;
-}
 
-.x.axis line {
-  stroke: lightgrey;
-}
+.chart {
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+  }
 
-.x.axis .minor {
-  stroke-opacity: .5;
-}
+  .axis path, .axis line {
+    fill: none;
+    stroke: #FFF;
+    shape-rendering: crispEdges;
+  }
 
-.x.axis path {
-  display: none;
-}
-
-.y.axis line, .y.axis path {
-  fill: none;
-  stroke: #000;
-}
+  .bar {
+    fill: steelblue;
+  }

@@ -4,24 +4,24 @@ user_metrics = require '../src/user-metrics'
 user = require '../src/user'
 
 met0 = [
-  timestamp:(new Date '2013-12-09 16:00 UTC').getTime(), value:1
+  timestamp:(new Date '2013-12-11 16:00 UTC').getTime(), value:1
 ,
-  timestamp:(new Date '2013-12-09 16:50 UTC').getTime(), value:3
+  timestamp:(new Date '2014-02-05 16:50 UTC').getTime(), value:3
 ,
-  timestamp:(new Date '2013-12-09 17:00 UTC').getTime(), value:10
+  timestamp:(new Date '2014-04-18 17:00 UTC').getTime(), value:10
 ,
-  timestamp:(new Date '2013-12-09 20:50 UTC').getTime(), value:5
+  timestamp:(new Date '2014-06-12 20:50 UTC').getTime(), value:5
 ,
 ]
 
 met1 = [
-  timestamp:(new Date '2013-11-04 14:00 UTC').getTime(), value:12
+  timestamp:(new Date '2014-11-04 14:00 UTC').getTime(), value:12
 ,
-  timestamp:(new Date '2013-11-04 14:10 UTC').getTime(), value:18
+  timestamp:(new Date '2014-12-04 14:10 UTC').getTime(), value:18
 ,
-  timestamp:(new Date '2013-11-04 14:30 UTC').getTime(), value:15
+  timestamp:(new Date '2015-01-04 14:30 UTC').getTime(), value:15
 ,
-  timestamp:(new Date '2013-11-04 14:50 UTC').getTime(), value:14
+  timestamp:(new Date '2015-02-04 14:50 UTC').getTime(), value:14
 ]
 
 met2 = [
